@@ -17,7 +17,7 @@ export default function CharacterDetailModal({ character, onClose }) {
         alignItems: "center",
         zIndex: 1000,
       }}
-      onClick={onClose} // cerrar al click fuera del modal
+      onClick={onClose}
     >
       <div
         style={{
@@ -28,7 +28,7 @@ export default function CharacterDetailModal({ character, onClose }) {
           maxWidth: "400px",
           position: "relative",
         }}
-        onClick={(e) => e.stopPropagation()} // evitar cierre al click dentro
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
@@ -42,11 +42,7 @@ export default function CharacterDetailModal({ character, onClose }) {
           ❌
         </button>
 
-        <img
-          src={character.image}
-          alt={character.name}
-          style={{ width: "100%", borderRadius: "10px" }}
-        />
+        <img src={character.image} alt={character.name} style={{ width: "100%", borderRadius: "10px" }} />
         <h2>{character.name}</h2>
         <p><strong>Status:</strong> {character.status}</p>
         <p><strong>Species:</strong> {character.species}</p>

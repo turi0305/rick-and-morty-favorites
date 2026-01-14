@@ -1,20 +1,11 @@
-import { deleteFavorite, getFavorites } from "../services/backendApi";
-
-export default function Favorites({ showToast, favorites, setFavorites }) {
-  const loadFavorites = async () => {
-    try {
-      const data = await getFavorites();
-      setFavorites(data);
-    } catch (err) {
-      console.error(err);
-      showToast("Error loading favorites", "error");
-    }
-  };
-
+export default function Favorites({ showToast, favorites, refreshFavorites }) {
   const handleDelete = async (id, name) => {
     try {
-      await deleteFavorite(id);
-      await loadFavorites();
+      // Borra favorito del backend
+      await fetch(`http://192.168.81.245:5000/api/favorites/${id}`, {
+        method: "DELETE",
+      });
+      await refreshFavorites(); // actualiza estado global
       showToast(`${name} removed from favorites`, "success");
     } catch (err) {
       console.error(err);
@@ -23,19 +14,53 @@ export default function Favorites({ showToast, favorites, setFavorites }) {
   };
 
   return (
-    <div>
-      <h2>⭐ Favorites</h2>
+    <div style={{ padding: "20px" }}>
+      <h1>Favorites</h1>
+
       {favorites.length === 0 ? (
-        <p>No favorites yet</p>
+        <p>No favorites yet.</p>
       ) : (
-        <ul>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "20px",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            padding: "10px",
+          }}
+        >
           {favorites.map((fav) => (
-            <li key={fav.id}>
-              {fav.character_name}{" "}
-              <button onClick={() => handleDelete(fav.id, fav.character_name)}>❌ Remove</button>
-            </li>
+            <div
+              key={fav.character_id}
+              style={{
+                border: "1px solid #ccc",
+                padding: "10px",
+                borderRadius: "8px",
+                position: "relative",
+              }}
+            >
+              <h3>{fav.character_name}</h3>
+              <p>Saved at: {new Date(fav.saved_at).toLocaleString()}</p>
+              <button
+                onClick={() => handleDelete(fav.id, fav.character_name)}
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: "#f44336",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "5px 10px",
+                  cursor: "pointer",
+                }}
+              >
+                Delete
+              </button>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );

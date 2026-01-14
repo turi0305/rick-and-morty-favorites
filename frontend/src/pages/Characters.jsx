@@ -1,35 +1,23 @@
 import { useEffect, useState } from "react";
 import { getCharacters } from "../services/rickAndMortyApi";
-import { getFavorites } from "../services/backendApi";
 import CharacterCard from "../components/CharacterCard";
 
-export default function Characters({ showToast, favorites, setFavorites }) {
+export default function Characters({ showToast, favorites, refreshFavorites }) {
   const [characters, setCharacters] = useState([]);
   const [page, setPage] = useState(1);
 
-  const loadFavorites = async () => {
+  const loadCharacters = async () => {
     try {
-      const data = await getFavorites();
-      setFavorites(data);
+      const data = await getCharacters(page);
+      setCharacters(data.results);
     } catch (err) {
       console.error(err);
-      showToast("Error loading favorites", "error");
+      showToast("Error loading characters", "error");
     }
   };
 
   useEffect(() => {
-    const loadCharacters = async () => {
-      try {
-        const data = await getCharacters(page);
-        setCharacters(data.results);
-      } catch (err) {
-        console.error(err);
-        showToast("Error loading characters", "error");
-      }
-    };
-
     loadCharacters();
-    loadFavorites();
   }, [page]);
 
   return (
@@ -39,8 +27,11 @@ export default function Characters({ showToast, favorites, setFavorites }) {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          gap: "16px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+          gap: "20px",
+          maxWidth: "1200px",
+          margin: "0 auto",
+          padding: "10px",
         }}
       >
         {characters.map((character) => (
@@ -48,13 +39,13 @@ export default function Characters({ showToast, favorites, setFavorites }) {
             key={character.id}
             character={character}
             favorites={favorites}
-            setFavorites={setFavorites}
+            refreshFavorites={refreshFavorites}
             showToast={showToast}
           />
         ))}
       </div>
 
-      <div style={{ marginTop: "20px" }}>
+      <div style={{ marginTop: "20px", textAlign: "center" }}>
         <button onClick={() => setPage((p) => Math.max(p - 1, 1))}>Previous</button>
         <button onClick={() => setPage((p) => p + 1)} style={{ marginLeft: "10px" }}>
           Next

@@ -37,11 +37,13 @@ export async function saveFavorite(character) {
     body: JSON.stringify({
       id: character.id,
       name: character.name,
+      image: character.image, // opcional si quieres guardar la imagen
+      status: character.status, // opcional
+      species: character.species, // opcional
     }),
   });
 
   if (!response.ok) {
-    // Leer mensaje de error del backend si existe
     try {
       const errorData = await parseResponse(response);
       throw new Error(errorData.error || `Failed to save favorite (${response.status})`);
