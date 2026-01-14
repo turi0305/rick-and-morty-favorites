@@ -71,5 +71,5 @@ Create a `.env` file in the **root of the project**:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key_here
-DATABASE_URL=postgresql://postgres:postgres@db:5432/rickmorty
+DATABASE_URL=your_db_url
 
