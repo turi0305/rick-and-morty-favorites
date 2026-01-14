@@ -1,10 +1,13 @@
-export default function Favorites({ favorites, onFavoriteDeleted }) {
+import { deleteFavorite } from "../services/backendApi";
+
+export default function Favorites({ favorites, onFavoriteUpdated }) {
   const handleDelete = async (id) => {
     try {
-      await deleteFavorite(id);
-      if (onFavoriteDeleted) onFavoriteDeleted();
+      await deleteFavorite(id); // Borra del backend
+      if (onFavoriteUpdated) onFavoriteUpdated(); // 🔄 Actualiza lista
     } catch (err) {
       console.error(err);
+      alert("Error deleting favorite");
     }
   };
 
