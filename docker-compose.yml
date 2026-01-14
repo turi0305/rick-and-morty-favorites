@@ -1,26 +1,25 @@
-version: "3.9"
 
 services:
   db:
     image: postgres:15
-    environment:
-      POSTGRES_DB: favorites
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+    env_file:
+      - .env
     volumes:
       - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
     build: ./backend
-    environment:
-      DATABASE_URL: postgres://postgres:postgres@db:5432/favorites
-    depends_on:
-      - db
+    env_file:
+      - .env
     ports:
       - "5000:5000"
+    depends_on:
+      - db
 
   frontend:
     build: ./frontend
+    env_file:
+      - .env
     ports:
       - "5173:5173"
     depends_on:
