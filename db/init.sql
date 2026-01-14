@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS favorites (
+ id SERIAL PRIMARY KEY,
+ character_id INTEGER NOT NULL,
+ character_name VARCHAR(255) NOT NULL,
+ saved_at TIMESTAMP DEFAULT NOW()
+);
