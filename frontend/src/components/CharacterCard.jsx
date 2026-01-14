@@ -1,4 +1,20 @@
+import { saveFavorite } from "../services/backendApi";
+
 export default function CharacterCard({ character }) {
+
+const handleSave = async () => {
+  console.log("CLICK SAVE", character);
+
+  try {
+    await saveFavorite(character);
+    alert(`${character.name} saved as favorite!`);
+  } catch (error) {
+    console.error(error);
+    alert("Error saving favorite");
+  }
+};
+
+
   return (
     <div style={{ border: "1px solid #ccc", padding: "10px", borderRadius: "8px" }}>
       <img
@@ -10,7 +26,7 @@ export default function CharacterCard({ character }) {
       <p>Status: {character.status}</p>
       <p>Species: {character.species}</p>
 
-      <button>
+      <button onClick={handleSave}>
         Save as Favorite
       </button>
     </div>
