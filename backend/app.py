@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import psycopg2
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 
@@ -13,26 +15,40 @@ def get_db_connection():
     return psycopg2.connect(DATABASE_URL)
 
 @app.route("/api/favorites", methods=["POST"])
-def save_favorite():
-    data = request.json
+def add_favorite():
+    data = request.get_json()
+    print("DATA RECIBIDA:", data)
 
-    if not data or "character_id" not in data or "character_name" not in data:
-        return jsonify({"error": "Invalid payload"}), 400
+    if not data:
+        return jsonify({"error": "No data received"}), 400
+
+    character_id = data.get("id")
+    character_name = data.get("name")
+
+    if character_id is None or character_name is None:
+        return jsonify({"error": "Missing fields"}), 400
 
     conn = get_db_connection()
     cur = conn.cursor()
+
     cur.execute(
         """
         INSERT INTO favorites (character_id, character_name)
         VALUES (%s, %s)
         """,
-        (data["character_id"], data["character_name"])
+        (character_id, character_name)
     )
+
     conn.commit()
     cur.close()
     conn.close()
 
-    return jsonify({"message": "Favorite saved"}), 201
+    return jsonify({
+        "message": "Favorite saved",
+        "id": character_id,
+        "name": character_name
+    }), 201
+
 
 @app.route("/api/favorites", methods=["GET"])
 def get_favorites():

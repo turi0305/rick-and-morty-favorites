@@ -1,13 +1,24 @@
-import { deleteFavorite } from "../services/backendApi";
+import { deleteFavorite, getFavorites } from "../services/backendApi";
 
-export default function Favorites({ favorites, onFavoriteUpdated }) {
-  const handleDelete = async (id) => {
+export default function Favorites({ showToast, favorites, setFavorites }) {
+  const loadFavorites = async () => {
     try {
-      await deleteFavorite(id); // Borra del backend
-      if (onFavoriteUpdated) onFavoriteUpdated(); // 🔄 Actualiza lista
+      const data = await getFavorites();
+      setFavorites(data);
     } catch (err) {
       console.error(err);
-      alert("Error deleting favorite");
+      showToast("Error loading favorites", "error");
+    }
+  };
+
+  const handleDelete = async (id, name) => {
+    try {
+      await deleteFavorite(id);
+      await loadFavorites();
+      showToast(`${name} removed from favorites`, "success");
+    } catch (err) {
+      console.error(err);
+      showToast("Error deleting favorite", "error");
     }
   };
 
@@ -21,7 +32,7 @@ export default function Favorites({ favorites, onFavoriteUpdated }) {
           {favorites.map((fav) => (
             <li key={fav.id}>
               {fav.character_name}{" "}
-              <button onClick={() => handleDelete(fav.id)}>❌ Remove</button>
+              <button onClick={() => handleDelete(fav.id, fav.character_name)}>❌ Remove</button>
             </li>
           ))}
         </ul>
