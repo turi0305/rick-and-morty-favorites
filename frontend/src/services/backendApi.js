@@ -50,3 +50,19 @@ export async function deleteFavorite(id) {
 
   return parseResponse(response);
 }
+
+export async function askAI(question) {
+  const response = await fetch(`${API_URL}/api/ai-chat`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ question }),
+  });
+
+  if (!response.ok) {
+    throw new Error("AI request failed");
+  }
+
+  return response.json();
+}

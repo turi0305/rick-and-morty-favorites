@@ -1,12 +1,12 @@
-// App.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Characters from "./pages/Characters";
 import Favorites from "./pages/Favorites";
+import AiChat from "./components/AiChat";
 import { getFavorites } from "./services/backendApi";
 
 export default function App() {
   const [toastMessage, setToastMessage] = useState("");
-  const [toastType, setToastType] = useState("success"); 
+  const [toastType, setToastType] = useState("success");
   const [favorites, setFavorites] = useState([]);
 
   const showToast = (msg, type = "success") => {
@@ -15,7 +15,6 @@ export default function App() {
     setTimeout(() => setToastMessage(""), 3000);
   };
 
-  // Función para refrescar favoritos en todos los componentes
   const refreshFavorites = async () => {
     try {
       const data = await getFavorites();
@@ -26,43 +25,28 @@ export default function App() {
     }
   };
 
+  useEffect(() => {
+    refreshFavorites();
+  }, []);
+
   return (
     <div>
-      {toastMessage && (
-        <div style={{
-          position: "fixed",
-          top: "10px",
-          left: "50%",
-          transform: "translateX(-50%)",
-          padding: "10px 20px",
-          backgroundColor: toastColors[toastType],
-          color: "#fff",
-          fontWeight: "bold",
-          borderRadius: "5px",
-          zIndex: 2000,
-          boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-          animation: "fadein 0.3s, fadeout 0.3s 2.7s"
-        }}>
-          {toastMessage}
-        </div>
-      )}
+      {/* Characters */}
+      <Characters
+        showToast={showToast}
+        favorites={favorites}
+        refreshFavorites={refreshFavorites}
+      />
 
-      <Characters 
-        showToast={showToast} 
-        favorites={favorites} 
-        refreshFavorites={refreshFavorites} 
+      {/* Favorites */}
+      <Favorites
+        showToast={showToast}
+        favorites={favorites}
+        refreshFavorites={refreshFavorites}
       />
-      <Favorites 
-        showToast={showToast} 
-        favorites={favorites} 
-        refreshFavorites={refreshFavorites} 
-      />
+
+      {/* 🤖 AI Chat */}
+      <AiChat showToast={showToast} />
     </div>
   );
 }
-
-const toastColors = {
-  success: "#4caf50",
-  error: "#f44336",
-  warning: "#ff9800",
-};
