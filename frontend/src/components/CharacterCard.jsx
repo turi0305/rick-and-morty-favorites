@@ -2,17 +2,22 @@ import { useState } from "react";
 import { saveFavorite, deleteFavorite } from "../services/backendApi";
 import CharacterDetailModal from "./CharacterDetailModal";
 
-export default function CharacterCard({
-  character,
-  favorites,
-  refreshFavorites,
-  showToast,
-}) {
-  const [showModal, setShowModal] = useState(false);
+const buttonStyle = {
+  marginTop: "10px",
+  padding: "10px 15px",
+  borderRadius: "8px",
+  border: "none",
+  color: "#fff",
+  fontWeight: "bold",
+  cursor: "pointer",
+  width: "100%",
+  fontSize: "16px",
+  transition: "0.3s",
+};
 
-  const isFavorite = favorites.some(
-    (fav) => fav.character_id === character.id
-  );
+export default function CharacterCard({ character, favorites, refreshFavorites, showToast }) {
+  const [showModal, setShowModal] = useState(false);
+  const isFavorite = favorites.some(fav => fav.character_id === character.id);
 
   const handleSave = async () => {
     try {
@@ -27,7 +32,7 @@ export default function CharacterCard({
 
   const handleDelete = async () => {
     try {
-      const fav = favorites.find((f) => f.character_id === character.id);
+      const fav = favorites.find(f => f.character_id === character.id);
       if (!fav) return;
 
       await deleteFavorite(fav.id);
@@ -43,43 +48,38 @@ export default function CharacterCard({
     <>
       <div
         style={{
-          border: "1px solid #ccc",
-          padding: "10px",
-          borderRadius: "8px",
+          border: "1px solid #333",
+          padding: "12px",
+          borderRadius: "12px",
+          backgroundColor: "#1e1e1e",
+          color: "#fff",
+          textAlign: "center",
+          marginBottom: "20px",
         }}
       >
-        {/* CLICK SOLO PARA ABRIR MODAL */}
         <img
           src={character.image}
           alt={character.name}
-          style={{
-            width: "100%",
-            borderRadius: "8px",
-            cursor: "pointer",
-          }}
+          style={{ width: "100%", borderRadius: "12px", cursor: "pointer" }}
           onClick={() => setShowModal(true)}
         />
-
-        <h3>{character.name}</h3>
+        <h3 style={{ margin: "12px 0" }}>{character.name}</h3>
         <p>Status: {character.status}</p>
         <p>Species: {character.species}</p>
 
         {isFavorite ? (
-          <button onClick={handleDelete}>
+          <button onClick={handleDelete} style={{ ...buttonStyle, backgroundColor: "#f44336" }}>
             Remove Favorite
           </button>
         ) : (
-          <button onClick={handleSave}>
+          <button onClick={handleSave} style={{ ...buttonStyle, backgroundColor: "#4caf50" }}>
             Save as Favorite
           </button>
         )}
       </div>
 
       {showModal && (
-        <CharacterDetailModal
-          character={character}
-          onClose={() => setShowModal(false)}
-        />
+        <CharacterDetailModal character={character} onClose={() => setShowModal(false)} />
       )}
     </>
   );

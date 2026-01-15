@@ -1,0 +1,57 @@
+/* Global Dark Theme */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #121212;
+  color: #eaeaea;
+}
+
+/* Containers */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Cards */
+.card {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 12px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+/* Buttons */
+button {
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  background-color: #3f51b5;
+  color: #fff;
+  font-weight: 600;
+}
+
+button:hover {
+  background-color: #5c6bc0;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* AI Answer */
+.ai-answer {
+  background-color: #f5f5f5;
+  color: #000;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
