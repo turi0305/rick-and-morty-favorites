@@ -103,6 +103,7 @@ PostgreSQL runs inside a Docker container
 The database and table are created automatically at startup
 Favorites are persisted while Docker containers are running
 No manual database setup is required
+Refresh the page to see the recent changes in the DB 
 
 📁 Project Structure
 text
@@ -123,3 +124,7 @@ rick-and-morty-favorites/
 │   └── init.sql
 ├── docker-compose.yml
 └── .env
+
+Author
+
+Developed by Geovanni Arturo López Calderón
