@@ -2,19 +2,6 @@ import { useState } from "react";
 import { saveFavorite, deleteFavorite } from "../services/backendApi";
 import CharacterDetailModal from "./CharacterDetailModal";
 
-const buttonStyle = {
-  marginTop: "10px",
-  padding: "10px 15px",
-  borderRadius: "8px",
-  border: "none",
-  color: "#fff",
-  fontWeight: "bold",
-  cursor: "pointer",
-  width: "100%",
-  fontSize: "16px",
-  transition: "0.3s",
-};
-
 export default function CharacterCard({ character, favorites, refreshFavorites, showToast }) {
   const [showModal, setShowModal] = useState(false);
   const isFavorite = favorites.some(fav => fav.character_id === character.id);
@@ -34,7 +21,6 @@ export default function CharacterCard({ character, favorites, refreshFavorites, 
     try {
       const fav = favorites.find(f => f.character_id === character.id);
       if (!fav) return;
-
       await deleteFavorite(fav.id);
       await refreshFavorites();
       showToast(`${character.name} removed from favorites`, "success");
@@ -54,7 +40,6 @@ export default function CharacterCard({ character, favorites, refreshFavorites, 
           backgroundColor: "#1e1e1e",
           color: "#fff",
           textAlign: "center",
-          marginBottom: "20px",
         }}
       >
         <img
@@ -67,19 +52,30 @@ export default function CharacterCard({ character, favorites, refreshFavorites, 
         <p>Status: {character.status}</p>
         <p>Species: {character.species}</p>
 
-        {isFavorite ? (
-          <button onClick={handleDelete} style={{ ...buttonStyle, backgroundColor: "#f44336" }}>
-            Remove Favorite
-          </button>
-        ) : (
-          <button onClick={handleSave} style={{ ...buttonStyle, backgroundColor: "#4caf50" }}>
-            Save as Favorite
-          </button>
-        )}
+        <button
+          onClick={isFavorite ? handleDelete : handleSave}
+          style={{
+            marginTop: "10px",
+            padding: "10px 15px",
+            borderRadius: "8px",
+            border: "none",
+            color: "#fff",
+            fontWeight: "bold",
+            cursor: "pointer",
+            width: "100%",
+            fontSize: "16px",
+            backgroundColor: isFavorite ? "#f44336" : "#4caf50",
+          }}
+        >
+          {isFavorite ? "Remove Favorite" : "Save as Favorite"}
+        </button>
       </div>
 
       {showModal && (
-        <CharacterDetailModal character={character} onClose={() => setShowModal(false)} />
+        <CharacterDetailModal
+          character={character}
+          onClose={() => setShowModal(false)}
+        />
       )}
     </>
   );

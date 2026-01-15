@@ -17,6 +17,7 @@ export default function CharacterDetailModal({ character, onClose }) {
         alignItems: "center",
         zIndex: 1000,
         padding: "10px",
+        boxSizing: "border-box",
       }}
       onClick={onClose}
     >

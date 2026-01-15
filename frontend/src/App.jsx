@@ -36,9 +36,11 @@ export default function App() {
         backgroundColor: "#121212",
         color: "#fff",
         minHeight: "100vh",
-        paddingBottom: "40px",
+        display: "flex",
+        flexDirection: "column",
       }}
     >
+      {/* Header */}
       <header
         style={{
           padding: "20px",
@@ -47,36 +49,41 @@ export default function App() {
           fontSize: "24px",
           fontWeight: "bold",
           boxShadow: "0 3px 10px rgba(0,0,0,0.3)",
+          flexShrink: 0,
         }}
       >
         Rick & Morty Favorites
       </header>
 
-      {/* AI Chat */}
-      <section style={{ marginTop: "30px" }}>
-        <AiChat showToast={showToast} />
-      </section>
+      {/* Main content */}
+      <main style={{ flex: 1, width: "100%", display: "flex", flexDirection: "column", alignItems: "center", padding: "20px", boxSizing: "border-box" }}>
+        {/* AI Chat */}
+        <section style={{ width: "100%", maxWidth: "700px", marginBottom: "40px" }}>
+          <AiChat showToast={showToast} />
+        </section>
 
-      {/* Characters */}
-      <section style={{ marginTop: "40px" }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Characters</h2>
-        <Characters
-          showToast={showToast}
-          favorites={favorites}
-          refreshFavorites={refreshFavorites}
-        />
-      </section>
+        {/* Characters */}
+        <section style={{ width: "100%", maxWidth: "1200px", marginBottom: "40px" }}>
+          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Characters</h2>
+          <Characters
+            showToast={showToast}
+            favorites={favorites}
+            refreshFavorites={refreshFavorites}
+          />
+        </section>
 
-      {/* Favorites */}
-      <section style={{ marginTop: "40px" }}>
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Your Favorites</h2>
-        <Favorites
-          showToast={showToast}
-          favorites={favorites}
-          refreshFavorites={refreshFavorites}
-        />
-      </section>
+        {/* Favorites */}
+        <section style={{ width: "100%", maxWidth: "800px", marginBottom: "40px" }}>
+          <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Your Favorites</h2>
+          <Favorites
+            showToast={showToast}
+            favorites={favorites}
+            refreshFavorites={refreshFavorites}
+          />
+        </section>
+      </main>
 
+      {/* Toast */}
       {toastMessage && (
         <div
           style={{
