@@ -12,6 +12,7 @@ The application is fully **Dockerized** and can be run on **Linux or Windows (WS
 - Save and manage favorites
 - Remove favorites
 - AI Chat to ask questions about characters (Bonus Feature)
+- AI Chat verifies character existence using the official Rick & Morty API before generating an answer.
 - Dark theme UI
 - REST API backend
 - Fully containerized with Docker
